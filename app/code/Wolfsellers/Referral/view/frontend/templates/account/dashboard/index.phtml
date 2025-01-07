@@ -43,7 +43,7 @@
                             <?= $block->escapeHtml($referral->getStatus()) ?>
                         </td>
                         <td data-th="<?= $block->escapeHtml(__('Actions')) ?>" class="col actions">
-                            <a href="#" class="action edit">
+                            <a href="<?= $block->getEditUrl($referral->getId()) ?>" class="action edit">
                                 <span><?= $block->escapeHtml(__('Edit')) ?></span>
                             </a>
                             <a href="#" class="action delete">
