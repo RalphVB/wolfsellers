@@ -1,0 +1,63 @@
+<?php
+
+/** @var $block \Wolfsellers\Referral\Block\Account\Dashboard\Index */
+?>
+<?php $referrals = $block->getReferrals(); ?>
+<div class="block">
+    <div class="block-title">
+        <strong><?= $block->escapeHtml(__('Referrals')) ?></strong>
+        <a type="submit" href="<?= $block->escapeUrl($block->getFormUrl()) ?>" class="action primary add"><span><?= $block->escapeHtml(__('New Referral')) ?></span></a>
+    </div>
+    <div class="block-content">
+        <?php if ($referrals && count($referrals)) : ?>
+
+        <div class="table-wrapper">
+            <table class="data table history" id="referral-table">
+                <caption class="table-caption"><?= $block->escapeHtml(__('Referrals')) ?></caption>
+                <thead>
+                    <tr>
+                        <th scope="col" class="col id"><?= $block->escapeHtml(__('ID')) ?></th>
+                        <th scope="col" class="col firstname"><?= $block->escapeHtml(__('First Name')) ?></th>
+                        <th scope="col" class="col lastname"><?= $block->escapeHtml(__('Last Name')) ?></th>
+                        <th scope="col" class="col email"><?= $block->escapeHtml(__('Email')) ?></th>
+                        <th scope="col" class="col status"><?= $block->escapeHtml(__('Status')) ?></th>
+                        <th scope="col" class="col actions"><?= $block->escapeHtml(__('Action')) ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($referrals as $referral) : ?>
+                    <tr>
+                        <td data-th="<?= $block->escapeHtml(__('ID')) ?>" class="col id">
+                            <?= $block->escapeHtml($referral->getId()) ?>
+                        </td>
+                        <td data-th="<?= $block->escapeHtml(__('First Name')) ?>" class="col firstname">
+                            <?= $block->escapeHtml($referral->getFirstName()) ?>
+                        </td>
+                        <td data-th="<?= $block->escapeHtml(__('Last Name')) ?>" class="col lastname">
+                            <?= $block->escapeHtml($referral->getLastName()) ?>
+                        </td>
+                        <td data-th="<?= $block->escapeHtml(__('Email')) ?>" class="col email">
+                            <?= $block->escapeHtml($referral->getEmail()) ?>
+                        </td>
+                        <td data-th="<?= $block->escapeHtml(__('Status')) ?>" class="col status">
+                            <?= $block->escapeHtml($referral->getStatus()) ?>
+                        </td>
+                        <td data-th="<?= $block->escapeHtml(__('Actions')) ?>" class="col actions">
+                            <a href="#" class="action edit">
+                                <span><?= $block->escapeHtml(__('Edit')) ?></span>
+                            </a>
+                            <a href="#" class="action delete">
+                                <span><?= $block->escapeHtml(__('Delete')) ?></span>
+                            </a>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+        <?php else : ?>
+        <div class="message info empty">
+            <span><?= $block->escapeHtml($block->getEmptyReferralssMessage()) ?></span></div>
+        <?php endif ?>
+    </div>
+</div>
