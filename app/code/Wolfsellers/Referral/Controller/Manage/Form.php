@@ -5,7 +5,7 @@ namespace Wolfsellers\Referral\Controller\Manage;
 use Magento\Framework\App\Action\HttpGetActionInterface as HttpGetActionInterface;
 use Magento\Customer\Controller\AccountInterface;
 use Magento\Framework\View\Result\PageFactory;
-use Psr\Log\LoggerInterface;
+use Magento\Framework\App\RequestInterface;
 
 class Form implements AccountInterface, HttpGetActionInterface
 {
@@ -14,17 +14,23 @@ class Form implements AccountInterface, HttpGetActionInterface
      */
     protected $resultPageFactory;
 
-    protected $logger;
+    /**
+     * @var RequestInterface
+     */
+    protected $request;
 
     /**
+     * Dependency Injection
+     * 
      * @param PageFactory $resultPageFactory
+     * @param RequestInterface $request
      */
     public function __construct(
         PageFactory $resultPageFactory,
-        LoggerInterface $logger
+        RequestInterface $request
     ) {
         $this->resultPageFactory = $resultPageFactory;
-        $this->logger = $logger;
+        $this->request = $request;
     }
 
     /**
@@ -34,8 +40,14 @@ class Form implements AccountInterface, HttpGetActionInterface
      */
     public function execute()
     {
+        $title = __('New Referral');
+
+        if($this->request->getParam('id') !== null){
+            $title = __("Update Referral");
+        }
+        
         $resultPage = $this->resultPageFactory->create();
-        $resultPage->getConfig()->getTitle()->set(__('New Referral'));
+        $resultPage->getConfig()->getTitle()->set($title);
         return $resultPage;
     }
 }
