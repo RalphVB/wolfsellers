@@ -2,6 +2,8 @@
 
 namespace Wolfsellers\Referral\Controller\Manage;
 
+use \Magento\Customer\Controller\AccountInterface;
+use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\App\RequestInterface;
 use \Magento\Framework\Controller\Result\RedirectFactory;
 use Magento\Customer\Model\Session as CustomerSession;
@@ -10,7 +12,7 @@ use Wolfsellers\Referral\Model\ResourceModel\Referral as ReferralResource;
 use Magento\Framework\Message\ManagerInterface;
 use Psr\Log\LoggerInterface;
 
-class Save implements \Magento\Customer\Controller\AccountInterface
+class Save implements AccountInterface, HttpPostActionInterface
 {
 
     /**
