@@ -6,6 +6,7 @@
 <form class="referral-form" action="<?= $escaper->escapeUrl($block->getFormAction()) ?>" method="post"
     id="referral-form" enctype="multipart/form-data"
     data-hasrequired="<?= $escaper->escapeHtmlAttr(__('* Required Fields')) ?>" data-mage-init='{"validation":{}}'>
+    <input type="hidden" id="entity_id" name="entity_id" value="<?= $referral->getId() ?>" />
     <fieldset class="fieldset">
         <legend class="legend"><span><?= $escaper->escapeHtml(__('Referral Information')) ?></span></legend><br>
         <div class="field field-firstname required">
