@@ -18,6 +18,11 @@ class Index extends \Magento\Framework\View\Element\Template
     protected $referalCollection;
 
     /**
+     * @var \Wolfsellers\Referral\Model\ResourceModel\Referral\Collection
+     */
+    protected $referrals;
+
+    /**
      * Dependency Injection
      * 
      * @param \Magento\Framework\View\Element\Template\Context $context
@@ -37,13 +42,50 @@ class Index extends \Magento\Framework\View\Element\Template
     }
 
     /**
+     * @inheritDoc
+     */
+    protected function _prepareLayout()
+    {
+        parent::_prepareLayout();
+        if ($this->getReferrals()) {
+            $pager = $this->getLayout()->createBlock(
+                \Magento\Theme\Block\Html\Pager::class,
+                'sales.order.history.pager'
+            )->setCollection(
+                $this->getReferrals()
+            );
+            $this->setChild('pager', $pager);
+            $this->getReferrals()->load();
+        }
+        return $this;
+    }
+
+    /**
+     * Get Pager child block output
+     *
+     * @return string
+     */
+    public function getPagerHtml()
+    {
+        return $this->getChildHtml('pager');
+    }
+
+    /**
      * Get Referrals List
      * 
      * @return ReferralCollection
      */
     public function getReferrals() {
-        $collection = $this->referalCollection->create();
-        return $collection->addFieldToFilter('customer_id', ['eq' => $this->customerSession->getCustomer()->getId()]);
+
+        if(!$this->referrals) {
+            $this->referrals = $this->referalCollection->create()->addFieldToFilter(
+                'customer_id', ['eq' => $this->customerSession->getCustomer()->getId()])
+            ->setOrder(
+                'created_at',
+                'desc'
+            );
+        }
+        return $this->referrals;
     }
 
     /**
