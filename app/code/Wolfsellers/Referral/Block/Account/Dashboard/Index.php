@@ -2,10 +2,16 @@
 
 namespace Wolfsellers\Referral\Block\Account\Dashboard;
 
+use Magento\Customer\Model\Session as CustomerSession;
 use Wolfsellers\Referral\Model\ResourceModel\Referral\CollectionFactory as ReferralCollection;
 
 class Index extends \Magento\Framework\View\Element\Template
 {
+    /**
+     * @var CustomerSession
+     */
+    protected $customerSession;
+
     /**
      * @var ReferralCollection
      */
@@ -15,14 +21,17 @@ class Index extends \Magento\Framework\View\Element\Template
      * Dependency Injection
      * 
      * @param \Magento\Framework\View\Element\Template\Context $context
+     * @param CustomerSession $customerSession
      * @param ReferralCollection $referalCollection
      * @param array $data
      */
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
+        CustomerSession $customerSession,
         ReferralCollection $referalCollection,
         array $data = []
     ) {
+        $this->customerSession = $customerSession;
         $this->referalCollection = $referalCollection;
         parent::__construct($context, $data);
     }
@@ -33,7 +42,8 @@ class Index extends \Magento\Framework\View\Element\Template
      * @return ReferralCollection
      */
     public function getReferrals() {
-        return $this->referalCollection->create();
+        $collection = $this->referalCollection->create();
+        return $collection->addFieldToFilter('customer_id', ['eq' => $this->customerSession->getCustomer()->getId()]);
     }
 
     /**
