@@ -6,7 +6,8 @@
 <div class="block">
     <div class="block-title">
         <strong><?= $block->escapeHtml(__('Referrals')) ?></strong>
-        <a type="submit" href="<?= $block->escapeUrl($block->getFormUrl()) ?>" class="action primary add"><span><?= $block->escapeHtml(__('New Referral')) ?></span></a>
+        <a type="submit" href="<?= $block->escapeUrl($block->getFormUrl()) ?>"
+            class="action primary add"><span><?= $block->escapeHtml(__('New Referral')) ?></span></a>
     </div>
     <div class="block-content">
         <?php if ($referrals && count($referrals)) : ?>
@@ -46,7 +47,7 @@
                             <a href="<?= $block->getEditUrl($referral->getId()) ?>" class="action edit">
                                 <span><?= $block->escapeHtml(__('Edit')) ?></span>
                             </a>
-                            <a href="#" class="action delete">
+                            <a href="<?= $block->getDeleteUrl($referral->getId()) ?>" class="action delete">
                                 <span><?= $block->escapeHtml(__('Delete')) ?></span>
                             </a>
                         </td>
@@ -61,3 +62,34 @@
         <?php endif ?>
     </div>
 </div>
+<script>
+    require([
+        'jquery',
+        'Magento_Ui/js/modal/confirm'
+    ], function ($, confirmation) {
+        'use strict';
+
+        $('.delete').on('click', function (e) {
+            e.preventDefault();
+
+            confirmation({
+                title: $.mage.__('Are you sure of this?'),
+                content: $.mage.__('Warning!'),
+                buttons: [{
+                    text: $.mage.__('Cancel'),
+                    class: 'action-secondary action-dismiss',
+                    click: function (event) {
+                        this.closeModal(event);
+                    }
+                }, {
+                    text: $.mage.__('OK'),
+                    class: 'action-primary action-accept',
+                    click: function () {
+                        window.location.href = e.currentTarget.href;
+                    }
+                }]
+            });
+        });
+    });
+
+</script>
