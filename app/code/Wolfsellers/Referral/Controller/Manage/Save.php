@@ -2,19 +2,18 @@
 
 namespace Wolfsellers\Referral\Controller\Manage;
 
-use \Magento\Customer\Controller\AccountInterface;
+use Magento\Customer\Controller\AccountInterface;
 use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\App\RequestInterface;
-use \Magento\Framework\Controller\Result\RedirectFactory;
+use Magento\Framework\Controller\Result\RedirectFactory;
 use Magento\Customer\Model\Session as CustomerSession;
 use Wolfsellers\Referral\Model\ReferralFactory;
-use Wolfsellers\Referral\Model\ResourceModel\Referral as ReferralResource; 
+use Wolfsellers\Referral\Model\ResourceModel\Referral as ReferralResource;
 use Magento\Framework\Message\ManagerInterface;
 use Psr\Log\LoggerInterface;
 
 class Save implements AccountInterface, HttpPostActionInterface
 {
-
     /**
      * @var RequestInterface
      */
@@ -80,7 +79,7 @@ class Save implements AccountInterface, HttpPostActionInterface
     }
 
     /**
-     * Saves Referral and redirects to index.
+     * Saves Referral and redirects to Index.
      *
      * @return \Magento\Framework\View\Result\Page
      */
