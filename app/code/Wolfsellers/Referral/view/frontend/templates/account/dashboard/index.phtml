@@ -56,6 +56,9 @@
                 </tbody>
             </table>
         </div>
+        <?php if ($block->getPagerHtml()) : ?>
+            <div class="toolbar bottom"><?= $block->getPagerHtml() ?></div>
+        <?php endif ?>
         <?php else : ?>
         <div class="message info empty">
             <span><?= $block->escapeHtml($block->getEmptyReferralssMessage()) ?></span></div>
