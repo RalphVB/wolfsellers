@@ -3,7 +3,6 @@
 namespace Wolfsellers\Referral\Block\Account\Dashboard;
 
 use Wolfsellers\Referral\Model\ResourceModel\Referral\CollectionFactory as ReferralCollection;
-use Magento\Framework\Exception\NoSuchEntityException;
 
 class Index extends \Magento\Framework\View\Element\Template
 {
@@ -64,5 +63,15 @@ class Index extends \Magento\Framework\View\Element\Template
      */
     public function getEditUrl(int $id) {
         return $this->getUrl('referral/manage/form', ['id'=> $this->_escaper->escapeHtml($id)]);
+    }
+
+    /**
+     * Get Delete URL
+     * 
+     * @param int $id
+     * @return string
+     */
+    public function getDeleteUrl(int $id) {
+        return $this->getUrl('referral/manage/delete', ['id'=> $this->_escaper->escapeHtml($id)]);
     }
 }
