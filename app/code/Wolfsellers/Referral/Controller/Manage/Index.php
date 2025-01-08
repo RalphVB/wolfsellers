@@ -2,7 +2,7 @@
 
 namespace Wolfsellers\Referral\Controller\Manage;
 
-use Magento\Framework\App\Action\HttpGetActionInterface as HttpGetActionInterface;
+use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Customer\Controller\AccountInterface;
 use Magento\Framework\View\Result\PageFactory;
 use Psr\Log\LoggerInterface;
