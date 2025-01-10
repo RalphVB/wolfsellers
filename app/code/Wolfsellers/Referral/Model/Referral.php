@@ -83,39 +83,40 @@ class Referral extends \Magento\Framework\Model\AbstractModel implements \Magent
 
         if (!ValidatorChain::is($this->getFirstName(), NotEmpty::class)) {
             $errors[] = __('Please enter a first name.');
-        }
-
-        if (!ValidatorChain::is($this->getFirstName(), Alpha::class)) {
-            $errors[] = __('Please enter only characters as first name.');
+        } else {
+            if (!ValidatorChain::is($this->getFirstName(), Alpha::class)) {
+                $errors[] = __('Please enter only characters as first name.');
+            }
         }
 
         if (!ValidatorChain::is($this->getLastName(), NotEmpty::class)) {
             $errors[] = __('Please enter a last name.');
+        } else {
+            if (!ValidatorChain::is($this->getLastName(), Alpha::class)) {
+                $errors[] = __('Please enter only characters as last name.');
+            }
         }
-
-        if (!ValidatorChain::is($this->getLastName(), Alpha::class)) {
-            $errors[] = __('Please enter only characters as last name.');
-        }
-
+        
         if (!ValidatorChain::is($this->getEmail(), NotEmpty::class)) {
             $errors[] = __('Please enter an email.');
-        }
-
-        if (!ValidatorChain::is($this->getEmail(), EmailAddress::class)) {
-            $errors[] = __('Please enter a valid email address.');
+        } else {
+            if (!ValidatorChain::is($this->getEmail(), EmailAddress::class)) {
+                $errors[] = __('Please enter a valid email address.');
+            }
         }
 
         if (!ValidatorChain::is($this->getPhone(), NotEmpty::class)) {
             $errors[] = __('Please enter an email.');
-        }
-
-        if (!ValidatorChain::is($this->getPhone(), IsInt::class)) {
-            $errors[] = __('Please enter a phone number.');
+        } else {
+            if (!ValidatorChain::is($this->getPhone(), IsInt::class)) {
+                $errors[] = __('Please enter a phone number.');
+            }
         }
 
         if (empty($errors)) {
             return true;
         }
+        
         return $errors;
     }
 }
