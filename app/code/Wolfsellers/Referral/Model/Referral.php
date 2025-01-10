@@ -81,6 +81,10 @@ class Referral extends \Magento\Framework\Model\AbstractModel implements \Magent
     {
         $errors = [];
 
+        if($this->load($this->getId())) {
+            $errors[] = __("The Referral you are trying to register already exists.");
+        }
+
         if (!ValidatorChain::is($this->getFirstName(), NotEmpty::class)) {
             $errors[] = __('Please enter a first name.');
         } else {
