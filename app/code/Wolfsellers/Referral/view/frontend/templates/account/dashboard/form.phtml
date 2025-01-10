@@ -7,27 +7,27 @@
     id="referral-form" enctype="multipart/form-data"
     data-hasrequired="<?= $escaper->escapeHtmlAttr(__('* Required Fields')) ?>" data-mage-init='{"validation":{}}'>
     <?= $block->getBlockHtml('formkey') ?>
-    <input type="hidden" id="entity_id" name="entity_id" value="<?= $referral->getId() ?>" />
+    <input type="hidden" id="entity_id" name="entity_id" value="<?= $escaper->escapeHtml($referral->getId()) ?>" />
     <fieldset class="fieldset">
         <legend class="legend"><span><?= $escaper->escapeHtml(__('Referral Information')) ?></span></legend><br>
         <div class="field field-firstname required">
             <label class="label" for="firstname"><span><?= $block->escapeHtmlAttr(__('First Name')) ?></span></label>
             <div class="control">
-                <input name="first_name" id="firstname" title="First Name" value="<?= $referral->getFirstName() ?>" class="input-text" type="text"
+                <input name="first_name" id="firstname" title="First Name" value="<?= $escaper->escapeHtml($referral->getFirstName()) ?>" class="input-text" type="text"
                     data-validate="{required:true, 'validate-alpha':true}">
             </div>
         </div>
         <div class="field field field-lastname required required">
             <label class="label" for="lastname"><span><?= $block->escapeHtmlAttr(__('Last Name')) ?></span></label>
             <div class="control">
-                <input name="last_name" id="lastname" title="Last Name" value="<?= $referral->getLastName() ?>" class="input-text" type="text"
+                <input name="last_name" id="lastname" title="Last Name" value="<?= $escaper->escapeHtml($referral->getLastName()) ?>" class="input-text" type="text"
                     data-validate="{required:true, 'validate-alpha':true}">
             </div>
         </div>
         <div class="field email required">
             <label class="label" for="email"><span><?= $block->escapeHtml(__('Email')) ?></span></label>
             <div class="control">
-                <input name="email" value="<?= $referral->getEmail() ?>" id="email" type="email" class="input-text"
+                <input name="email" value="<?= $escaper->escapeHtml($referral->getEmail()) ?>" id="email" type="email" class="input-text"
                     title="<?= $block->escapeHtmlAttr(__('Email')) ?>" data-mage-init='{"mage/trim-input":{}}'
                     data-validate="{required:true, 'validate-email':true}">
             </div>
@@ -35,7 +35,7 @@
         <div class="field phone required">
             <label class="label" for="phone"><span><?= $block->escapeHtmlAttr(__('Telephone')) ?></span></label>
             <div class="control">
-                <input name="phone" id="phone" title="Phone" value="<?= $referral->getPhone() ?>" class="input-text" type="text"
+                <input name="phone" id="phone" title="Phone" value="<?= $escaper->escapeHtml($referral->getPhone()) ?>" class="input-text" type="text"
                     data-validate="{required:true, 'validate-digits':'true'}">
             </div>
         </div>
