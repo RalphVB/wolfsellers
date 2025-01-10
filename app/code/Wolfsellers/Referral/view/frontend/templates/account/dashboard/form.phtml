@@ -6,20 +6,21 @@
 <form class="referral-form" action="<?= $escaper->escapeUrl($block->getFormAction()) ?>" method="post"
     id="referral-form" enctype="multipart/form-data"
     data-hasrequired="<?= $escaper->escapeHtmlAttr(__('* Required Fields')) ?>" data-mage-init='{"validation":{}}'>
+    <?= $block->getBlockHtml('formkey') ?>
     <input type="hidden" id="entity_id" name="entity_id" value="<?= $referral->getId() ?>" />
     <fieldset class="fieldset">
         <legend class="legend"><span><?= $escaper->escapeHtml(__('Referral Information')) ?></span></legend><br>
         <div class="field field-firstname required">
             <label class="label" for="firstname"><span><?= $block->escapeHtmlAttr(__('First Name')) ?></span></label>
             <div class="control">
-                <input name="firstname" id="firstname" title="First Name" value="<?= $referral->getFirstName() ?>" class="input-text" type="text"
+                <input name="first_name" id="firstname" title="First Name" value="<?= $referral->getFirstName() ?>" class="input-text" type="text"
                     data-validate="{required:true, 'validate-alpha':true}">
             </div>
         </div>
         <div class="field field field-lastname required required">
             <label class="label" for="lastname"><span><?= $block->escapeHtmlAttr(__('Last Name')) ?></span></label>
             <div class="control">
-                <input name="lastname" id="lastname" title="Last Name" value="<?= $referral->getLastName() ?>" class="input-text" type="text"
+                <input name="last_name" id="lastname" title="Last Name" value="<?= $referral->getLastName() ?>" class="input-text" type="text"
                     data-validate="{required:true, 'validate-alpha':true}">
             </div>
         </div>
