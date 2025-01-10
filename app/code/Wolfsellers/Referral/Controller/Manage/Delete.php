@@ -3,6 +3,7 @@ namespace Wolfsellers\Referral\Controller\Manage;
 
 use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Customer\Controller\AccountInterface;
+use Magento\Framework\App\CsrfAwareActionInterface;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Controller\Result\RedirectFactory;
 use Wolfsellers\Referral\Model\ReferralFactory;
@@ -10,7 +11,7 @@ use Wolfsellers\Referral\Model\ResourceModel\Referral as ReferralResource;
 use Magento\Framework\Message\ManagerInterface;
 use Psr\Log\LoggerInterface;
 
-class Delete implements AccountInterface, HttpGetActionInterface
+class Delete implements AccountInterface, HttpGetActionInterface, CsrfAwareActionInterface
 {
     /**
      * @var RequestInterface
@@ -89,5 +90,25 @@ class Delete implements AccountInterface, HttpGetActionInterface
         }
 
         return $this->resultRedirectFactory->create()->setPath('referral/manage');
+    }
+
+    /**
+     * @param \Magento\Framework\App\RequestInterface $request
+     *
+     * @return bool|null
+     */
+    public function validateForCsrf(\Magento\Framework\App\RequestInterface $request): ?bool
+    {
+        return true;
+    }
+
+    /**
+     * @param \Magento\Framework\App\RequestInterface $request
+     *
+     * @return InvalidRequestException|null
+     */
+    public function createCsrfValidationException(\Magento\Framework\App\RequestInterface $request): ? \Magento\Framework\App\Request\InvalidRequestException
+    {
+        return null;
     }
 }
