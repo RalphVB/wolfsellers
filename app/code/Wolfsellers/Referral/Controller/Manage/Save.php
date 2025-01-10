@@ -6,6 +6,7 @@ use Magento\Customer\Controller\AccountInterface;
 use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Controller\Result\RedirectFactory;
+use Magento\Framework\Data\Form\FormKey\Validator;
 use Magento\Customer\Model\Session as CustomerSession;
 use Wolfsellers\Referral\Model\ReferralFactory;
 use Wolfsellers\Referral\Model\ResourceModel\Referral as ReferralResource;
@@ -23,6 +24,11 @@ class Save implements AccountInterface, HttpPostActionInterface
      * @var RedirectFactory
      */
     protected $resultRedirectFactory;
+
+    /**
+     * @var Validator
+     */
+    protected $formKeyValidator;
 
     /**
      * @var CustomerSession
@@ -54,6 +60,7 @@ class Save implements AccountInterface, HttpPostActionInterface
      *
      * @param RequestInterface $request
      * @param RedirectFactory $resultRedirectFactory
+     * @param Validator $formKeyValidator
      * @param CustomerSession $customerSession
      * @param ReferralFactory $referralFactory
      * @param ReferralResource $referralResource
@@ -63,6 +70,7 @@ class Save implements AccountInterface, HttpPostActionInterface
     public function __construct(
         RequestInterface $request,
         RedirectFactory $resultRedirectFactory,
+        Validator $formKeyValidator,
         CustomerSession $customerSession,
         ReferralFactory $referralFactory,
         ReferralResource $referralResource,
@@ -71,6 +79,7 @@ class Save implements AccountInterface, HttpPostActionInterface
     ) {
         $this->request = $request;
         $this->resultRedirectFactory = $resultRedirectFactory;
+        $this->formKeyValidator = $formKeyValidator;
         $this->referralFactory = $referralFactory;
         $this->referralResource = $referralResource;
         $this->customerSession = $customerSession;
@@ -86,6 +95,11 @@ class Save implements AccountInterface, HttpPostActionInterface
     public function execute()
     {
         $redirect = $this->resultRedirectFactory->create();
+
+        if (!$this->formKeyValidator->validate($this->request)) {
+            $this->messageManager->addErrorMessage(__('Something went wrong.'));
+            return $redirect->setRefererUrl();
+        }
 
         try {
             $data = $this->request->getParams();
