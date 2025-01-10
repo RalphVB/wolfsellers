@@ -50,7 +50,7 @@ class Index extends \Magento\Framework\View\Element\Template
         if ($this->getReferrals()) {
             $pager = $this->getLayout()->createBlock(
                 \Magento\Theme\Block\Html\Pager::class,
-                'sales.order.history.pager'
+                'referral.pager'
             )->setCollection(
                 $this->getReferrals()
             );
