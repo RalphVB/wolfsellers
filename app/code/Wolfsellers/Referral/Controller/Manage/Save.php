@@ -85,10 +85,12 @@ class Save implements AccountInterface, HttpPostActionInterface
      */
     public function execute()
     {
+        $redirect = $this->resultRedirectFactory->create();
+
         try {
             $data = $this->request->getParams();
 
-            $referral = $this->referralFactory->create($data);
+            $referral = $this->referralFactory->create()->setData($data);
             
             $referral->unsetData('entity_id');
             $referral->unsetData('status');
@@ -96,7 +98,7 @@ class Save implements AccountInterface, HttpPostActionInterface
 
             $validate = $referral->validate();
 
-            if ($validate = true) {
+            if ($validate === true) {
                 if( !empty($data['entity_id'])) {
                     $referral->load($data['entity_id']);
                 } else {
@@ -104,8 +106,8 @@ class Save implements AccountInterface, HttpPostActionInterface
                     $referral->setCustomerId($this->customerSession->getCustomer()->getId());
                 }
     
-                $referral->setFirstName($data['firstname']);
-                $referral->setLastName($data['lastname']);
+                $referral->setFirstName($data['first_name']);
+                $referral->setLastName($data['last_name']);
                 $referral->setEmail($data['email']);
                 $referral->setPhone($data['phone']);
     
@@ -122,6 +124,8 @@ class Save implements AccountInterface, HttpPostActionInterface
                 } else {
                     $this->messageManager->addErrorMessage(__("We can't save your referral right now."));
                 }
+
+                return $redirect->setRefererUrl();
             }
             
         } catch (\Exception $ex) {
@@ -129,6 +133,6 @@ class Save implements AccountInterface, HttpPostActionInterface
             $this->logger->debug($ex->getMessage());
         }
         
-        return $this->resultRedirectFactory->create()->setPath('referral/manage');
+        return $redirect->setPath('referral/manage');
     }
 }
