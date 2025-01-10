@@ -87,25 +87,43 @@ class Save implements AccountInterface, HttpPostActionInterface
     {
         try {
             $data = $this->request->getParams();
-            $referral = $this->referralFactory->create();
 
-            if( !empty($data['entity_id'])) {
-                $referral->load($data['entity_id']);
-            } else {
-                $referral->setStatus(false);
-                $referral->setCustomerId($this->customerSession->getCustomer()->getId());
-            }
+            $referral = $this->referralFactory->create($data);
+            
+            $referral->unsetData('entity_id');
+            $referral->unsetData('status');
+            $referral->unsetData('customer_id');
 
-            $referral->setFirstName($data['firstname']);
-            $referral->setLastName($data['lastname']);
-            $referral->setEmail($data['email']);
-            $referral->setPhone($data['phone']);
+            $validate = $referral->validate();
 
-            $this->referralResource->save($referral);
-        
-            // TODO: SEND EMAIL FOR REFERRAL.
+            if ($validate = true) {
+                if( !empty($data['entity_id'])) {
+                    $referral->load($data['entity_id']);
+                } else {
+                    $referral->setStatus(false);
+                    $referral->setCustomerId($this->customerSession->getCustomer()->getId());
+                }
     
-            $this->messageManager->addSuccessMessage(__('Referral Saved Successfully.'));
+                $referral->setFirstName($data['firstname']);
+                $referral->setLastName($data['lastname']);
+                $referral->setEmail($data['email']);
+                $referral->setPhone($data['phone']);
+    
+                $this->referralResource->save($referral);
+            
+                // TODO: SEND EMAIL FOR REFERRAL.
+        
+                $this->messageManager->addSuccessMessage(__('Referral Saved Successfully.'));
+            } else {
+                if (is_array($validate)) {
+                    foreach ($validate as $errorMessage) {
+                        $this->messageManager->addErrorMessage($errorMessage);
+                    }
+                } else {
+                    $this->messageManager->addErrorMessage(__("We can't save your referral right now."));
+                }
+            }
+            
         } catch (\Exception $ex) {
             $this->messageManager->addErrorMessage(__('Something went wrong. Please try again.'));
             $this->logger->debug($ex->getMessage());
