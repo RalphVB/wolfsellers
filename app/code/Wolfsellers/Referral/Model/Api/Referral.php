@@ -96,18 +96,33 @@ class Referral implements ReferralInterface
     public function create($data)
     {
         try {
-            $referral = $this->referralFactory->create();
+            $referral = $this->referralFactory->create()->setData($data);
 
-            $referral->setFirstName($data['firstname']);
-            $referral->setLastName($data['lastname']);
-            $referral->setEmail($data['email']);
-            $referral->setPhone($data['phone']);
-            $referral->setStatus(false);
-            $referral->setCustomerId(1);
+            $referral->unsetData('entity_id');
+            $referral->unsetData('status');
+            $referral->unsetData('customer_id');
 
-            $this->referralResource->save($referral);
+            $validate = $referral->validate(); 
 
-            return json_encode(['status' => true, 'message' => __("Referral added successfully!")]);
+            if($validate === true ) {
+                $referral->setFirstName($data['first_name']);
+                $referral->setLastName($data['last_name']);
+                $referral->setEmail($data['email']);
+                $referral->setPhone($data['phone']);
+                $referral->setStatus(false);
+                $referral->setCustomerId(1);
+
+                $this->referralResource->save($referral);
+
+                return json_encode(['status' => true, 'message' => __("Referral added successfully!")]);
+
+            } else {
+                if (is_array($validate)) {
+                    return json_encode(['status' => false, 'message' => $validate]);
+                } else {
+                    return json_encode(['status' => false, 'message' => __("We can't save your referral right now.")]);
+                }
+            }
 
         } catch(\Exception $e) {
             return json_encode(['status' => false, 'message' => $e->getMessage()]);
