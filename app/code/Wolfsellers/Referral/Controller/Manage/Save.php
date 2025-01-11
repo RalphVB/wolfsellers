@@ -8,9 +8,12 @@ use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Controller\Result\RedirectFactory;
 use Magento\Framework\Data\Form\FormKey\Validator;
 use Magento\Customer\Model\Session as CustomerSession;
+use Magento\Framework\Message\ManagerInterface;
+
 use Wolfsellers\Referral\Model\ReferralFactory;
 use Wolfsellers\Referral\Model\ResourceModel\Referral as ReferralResource;
-use Magento\Framework\Message\ManagerInterface;
+use Wolfsellers\Referral\Validator\Referral as ReferralValidation;
+
 use Psr\Log\LoggerInterface;
 
 class Save implements AccountInterface, HttpPostActionInterface
@@ -36,6 +39,11 @@ class Save implements AccountInterface, HttpPostActionInterface
     protected $customerSession;
 
     /**
+     * @var ManagerInterface
+     */
+    protected $messageManager;
+
+    /**
      * @var ReferralFactory
      */
     protected $referralFactory;
@@ -46,14 +54,14 @@ class Save implements AccountInterface, HttpPostActionInterface
     protected $referralResource;
 
     /**
-     * @var ManagerInterface
-     */
-    protected $messageManager;
-
-    /**
      * @var LoggerInterface
      */
     protected $logger;
+
+    /**
+     * @var ReferralValidation
+     */
+    protected $referralValidation;
 
     /**
      * Dependency Initilization
@@ -62,9 +70,10 @@ class Save implements AccountInterface, HttpPostActionInterface
      * @param RedirectFactory $resultRedirectFactory
      * @param Validator $formKeyValidator
      * @param CustomerSession $customerSession
+     * @param ManagerInterface $messageManager
      * @param ReferralFactory $referralFactory
      * @param ReferralResource $referralResource
-     * @param ManagerInterface $messageManager
+     * @param ReferralValidation $referralValidation
      * @param LoggerInterface $logger
      */
     public function __construct(
@@ -72,18 +81,20 @@ class Save implements AccountInterface, HttpPostActionInterface
         RedirectFactory $resultRedirectFactory,
         Validator $formKeyValidator,
         CustomerSession $customerSession,
+        ManagerInterface $messageManager,
         ReferralFactory $referralFactory,
         ReferralResource $referralResource,
-        ManagerInterface $messageManager,
+        ReferralValidation $referralValidation,
         LoggerInterface $logger
     ) {
         $this->request = $request;
         $this->resultRedirectFactory = $resultRedirectFactory;
         $this->formKeyValidator = $formKeyValidator;
-        $this->referralFactory = $referralFactory;
-        $this->referralResource = $referralResource;
         $this->customerSession = $customerSession;
         $this->messageManager = $messageManager;
+        $this->referralFactory = $referralFactory;
+        $this->referralResource = $referralResource;
+        $this->referralValidation = $referralValidation;
         $this->logger = $logger;
     }
 
@@ -105,14 +116,10 @@ class Save implements AccountInterface, HttpPostActionInterface
             $data = $this->request->getParams();
 
             $referral = $this->referralFactory->create()->setData($data);
-            
-            $referral->unsetData('entity_id');
-            $referral->unsetData('status');
-            $referral->unsetData('customer_id');
 
-            $validate = $referral->validate();
+            $validate =  $this->referralValidation->validate($referral);
 
-            if ($validate === true) {
+            if (is_bool($validate) && $validate === true) {
                 if( !empty($data['entity_id'])) {
                     $referral->load($data['entity_id']);
                 } else {
