@@ -5,7 +5,6 @@ namespace Wolfsellers\Referral\Block\Account\Dashboard;
 use Magento\Backend\Block\Template\Context;
 use Magento\Framework\App\RequestInterface;
 use Wolfsellers\Referral\Model\ReferralFactory;
-use Wolfsellers\Referral\Model\ResourceModel\Referral as ReferralResource;
 
 class Form extends \Magento\Framework\View\Element\Template
 {
@@ -19,31 +18,23 @@ class Form extends \Magento\Framework\View\Element\Template
      */
     protected $referralFactory;
 
-        /**
-     * @var ReferralResource
-     */
-    protected $referralResource;
-
     /**
      * Dependency Injection
      * 
      * @param Context $context
      * @param RequestInterface $request
      * @param ReferralFactory $referralFactory
-     * @param ReferralResource $referralResource
      * @param array $data
      */
     public function __construct(
         Context $context,
         RequestInterface $request,
         ReferralFactory $referralFactory,
-        ReferralResource $referralResource,
         array $data = []
     )
     {
         $this->request = $request;
         $this->referralFactory = $referralFactory;
-        $this->referralResource = $referralResource;
         parent::__construct($context, $data);
     }
     
