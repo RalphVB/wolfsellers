@@ -6,6 +6,7 @@ use Wolfsellers\Referral\Api\ReferralInterface;
 use Wolfsellers\Referral\Model\ReferralFactory;
 use Wolfsellers\Referral\Model\ResourceModel\Referral as ReferralResource;
 use Wolfsellers\Referral\Model\ResourceModel\Referral\CollectionFactory as ReferralCollection;
+use Wolfsellers\Referral\Validator\Referral as ReferralValidation;
 
 use Psr\Log\LoggerInterface;
 
@@ -27,6 +28,11 @@ class Referral implements ReferralInterface
     private $referralCollection;
 
     /**
+     * @var ReferralValidation
+     */
+    protected $referralValidation;
+
+    /**
      * @var LoggerInterface;
      */
     private $logger;
@@ -35,17 +41,20 @@ class Referral implements ReferralInterface
      * @param ReferralFactory $referralFactory
      * @param ReferralResource $referralResource
      * @param ReferralCollection $referralCollection
+     * @param ReferralValidation $referralValidation
      */
     public function __construct(
         ReferralFactory $referralFactory,
         ReferralResource $referralResource,
         ReferralCollection $referralCollection,
+        ReferralValidation $referralValidation,
         LoggerInterface $logger
     )
     {
         $this->referralFactory = $referralFactory;
         $this->referralResource = $referralResource;
         $this->referralCollection = $referralCollection;
+        $this->referralValidation = $referralValidation;
         $this->logger = $logger;
     }
 
@@ -102,9 +111,9 @@ class Referral implements ReferralInterface
             $referral->unsetData('status');
             $referral->unsetData('customer_id');
 
-            $validate = $referral->validate(); 
+            $validate =  $this->referralValidation->validate($referral);
 
-            if($validate === true ) {
+            if (is_bool($validate) && $validate === true) {
                 $referral->setFirstName($data['first_name']);
                 $referral->setLastName($data['last_name']);
                 $referral->setEmail($data['email']);
@@ -115,7 +124,6 @@ class Referral implements ReferralInterface
                 $this->referralResource->save($referral);
 
                 return json_encode(['status' => true, 'message' => __("Referral added successfully!")]);
-
             } else {
                 if (is_array($validate)) {
                     return json_encode(['status' => false, 'message' => $validate]);
