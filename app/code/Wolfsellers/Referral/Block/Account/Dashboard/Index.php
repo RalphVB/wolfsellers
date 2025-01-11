@@ -15,7 +15,7 @@ class Index extends \Magento\Framework\View\Element\Template
     /**
      * @var ReferralCollection
      */
-    protected $referalCollection;
+    protected $referralCollection;
 
     /**
      * @var \Wolfsellers\Referral\Model\ResourceModel\Referral\Collection
@@ -27,17 +27,17 @@ class Index extends \Magento\Framework\View\Element\Template
      * 
      * @param \Magento\Framework\View\Element\Template\Context $context
      * @param CustomerSession $customerSession
-     * @param ReferralCollection $referalCollection
+     * @param ReferralCollection $referralCollection
      * @param array $data
      */
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
         CustomerSession $customerSession,
-        ReferralCollection $referalCollection,
+        ReferralCollection $referralCollection,
         array $data = []
     ) {
         $this->customerSession = $customerSession;
-        $this->referalCollection = $referalCollection;
+        $this->referralCollection = $referralCollection;
         parent::__construct($context, $data);
     }
 
@@ -78,10 +78,10 @@ class Index extends \Magento\Framework\View\Element\Template
     public function getReferrals() {
 
         if(!$this->referrals) {
-            $this->referrals = $this->referalCollection->create()->addFieldToFilter(
+            $this->referrals = $this->referralCollection->create()->addFieldToFilter(
                 'customer_id', ['eq' => $this->customerSession->getCustomer()->getId()])
             ->setOrder(
-                'created_at',
+                'entity_id',
                 'desc'
             );
         }
