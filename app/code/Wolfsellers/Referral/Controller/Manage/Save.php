@@ -54,14 +54,14 @@ class Save implements AccountInterface, HttpPostActionInterface
     protected $referralResource;
 
     /**
-     * @var LoggerInterface
-     */
-    protected $logger;
-
-    /**
      * @var ReferralValidation
      */
     protected $referralValidation;
+
+        /**
+     * @var LoggerInterface
+     */
+    protected $logger;
 
     /**
      * Dependency Initilization
