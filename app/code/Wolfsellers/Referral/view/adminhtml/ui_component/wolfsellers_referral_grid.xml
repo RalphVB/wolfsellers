@@ -12,7 +12,7 @@
         <settings>
             <updateUrl path="mui/index/render"/>
         </settings>
-        <dataProvider class="Wolfsellers\Referral\Ui\Component\DataProvider\Referral" name="wolfsellers_referral_grid_data_source">
+        <dataProvider class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider" name="wolfsellers_referral_grid_data_source">
             <settings>
                 <requestFieldName>id</requestFieldName>
                 <primaryFieldName>entity_id</primaryFieldName>
