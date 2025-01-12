@@ -3,11 +3,16 @@
     <acl>
         <resources>
             <resource id="Magento_Backend::admin">
-                <resource id="Wolfsellers_Referral::referral" title="Referral"sortOrder="70">
-                    <resource id="Wolfsellers_Referral::getReferrals" title="Get Referrals" sortOrder="10"/>
-                    <resource id="Wolfsellers_Referral::getBy" title="Get Referrals By" sortOrder="20"/>
-                    <resource id="Wolfsellers_Referral::create" title="Create Referral" sortOrder="30"/>
-                    <resource id="Wolfsellers_Referral::delete" title="Delete Referrals" sortOrder="40"/>
+                <resource id="Wolfsellers_Referral::referral" title="Referrals" sortOrder="70">
+                    <resource id="Wolfsellers_Referral::api" title="API" sortOrder="10">
+                        <resource id="Wolfsellers_Referral::getReferrals" title="Get Referrals" sortOrder="10"/>
+                        <resource id="Wolfsellers_Referral::getBy" title="Get Referrals By" sortOrder="20"/>
+                        <resource id="Wolfsellers_Referral::create" title="Create Referral" sortOrder="30"/>
+                        <resource id="Wolfsellers_Referral::delete" title="Delete Referrals" sortOrder="40"/>
+                    </resource>
+                    <resource id="Wolfsellers_Referral::menu" title="Menu" sortOrder="20">
+                        <resource id="Wolfsellers_Referral::menu_grid" title="Referral Management" sortOrder="10"/>
+                    </resource>
                 </resource>
             </resource>
         </resources>
