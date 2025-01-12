@@ -16,6 +16,12 @@ class Index extends Action implements HttpGetActionInterface
      */
     protected $pageFactory;
 
+    /**
+     * Dependency Injection
+     * 
+     * @param Context
+     * @param PageFactory
+     */
     public function __construct(
         Context $context,
         PageFactory $pageFactory
