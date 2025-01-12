@@ -33,14 +33,21 @@ class Referral extends UiDataProvider
      */
     protected $referralCollection;
 
-
     protected $meta = [];
     protected $data = [];
 
     /**
-     * @param array<int, array<int, string>> $meta
-     * @param array<int, array<int, string>> $data
-     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
+     * Dependency Injection
+     * 
+     * @param string $name
+     * @param string $primaryFieldName
+     * @param string $requestFieldName
+     * @param ReportingInterface $reporting
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param RequestInterface $request
+     * @param FilterBuilder $filterBuilder
+     * @param array $meta
+     * @param array $data
      */
     public function __construct(
         string $name,
@@ -54,8 +61,6 @@ class Referral extends UiDataProvider
         array $meta = [],
         array $data = []
     ) {
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->filterBuilder = $filterBuilder;
         $this->referralCollection = $referralCollection;
         parent::__construct(
             $name,
@@ -73,7 +78,6 @@ class Referral extends UiDataProvider
     public function getData(): array
     {
         try {
-            $searchCriteria = $this->searchCriteriaBuilder->create();
             $collection = $this->referralCollection->create()->load();
             return [
                 'totalRecords' => count($collection),
@@ -82,7 +86,7 @@ class Referral extends UiDataProvider
         } catch (LocalizedException $e) {
             return [
                 'items' => [],
-                'error' => 'Server Error: Please contact the administrator if it persists !!',
+                'error' => 'Something went wrong.',
             ];
         }
     }
