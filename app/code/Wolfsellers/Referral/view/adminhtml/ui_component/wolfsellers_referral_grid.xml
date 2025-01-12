@@ -24,6 +24,7 @@
             <sticky>true</sticky>
         </settings>
         <columnsControls name="columns_controls"/>
+        <exportButton name="export_button" class="Wolfsellers\Referral\Component\ExportButton" />
         <paging name="listing_paging"/>
     </listingToolbar>
     <columns name="wolfsellers_referral_columns">
