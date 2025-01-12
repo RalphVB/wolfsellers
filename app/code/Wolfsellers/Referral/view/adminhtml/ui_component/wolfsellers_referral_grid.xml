@@ -1,26 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
     <argument name="data" xsi:type="array">
         <item name="js_config" xsi:type="array">
-            <item name="provider" xsi:type="string">
-                wolfsellers_referral_grid.wolfsellers_referral_grid_data_source
-            </item>
-            <item name="deps" xsi:type="string">
-                wolfsellers_referral_grid.wolfsellers_referral_grid_data_source
-            </item>
+            <item name="provider" xsi:type="string">wolfsellers_referral_grid.wolfsellers_referral_grid_data_source</item>
+            <item name="deps" xsi:type="string">wolfsellers_referral_grid.wolfsellers_referral_grid_data_source</item>
         </item>
         <item name="spinner" xsi:type="string">wolfsellers_referral_columns</item>
     </argument>
     <dataSource name="wolfsellers_referral_grid_data_source" component="Magento_Ui/js/grid/provider">
         <settings>
-            <storageConfig>
-                <param name="indexField" xsi:type="string">entity_id</param>
-            </storageConfig>
             <updateUrl path="mui/index/render"/>
         </settings>
         <dataProvider class="Wolfsellers\Referral\Ui\Component\DataProvider\Referral" name="wolfsellers_referral_grid_data_source">
             <settings>
-                <requestFieldName>entity_id</requestFieldName>
+                <requestFieldName>id</requestFieldName>
                 <primaryFieldName>entity_id</primaryFieldName>
             </settings>
         </dataProvider>
@@ -29,46 +23,38 @@
         <settings>
             <sticky>true</sticky>
         </settings>
-        <bookmark name="bookmarks"/>
         <columnsControls name="columns_controls"/>
-        <!-- <filters name="listing_filters" /> -->
         <paging name="listing_paging"/>
     </listingToolbar>
     <columns name="wolfsellers_referral_columns">
+        <selectionsColumn name="ids" sortOrder="10">
+            <settings>
+                <indexField>entity_id</indexField>
+            </settings>
+        </selectionsColumn>
         <column name="entity_id">
             <settings>
                 <label translate="true">ID</label>
-                <sortable>true</sortable>
             </settings>
         </column>
         <column name="first_name">
             <settings>
                 <label translate="true">First Name</label>
-                <filter>text</filter>
-                <dataType>text</dataType>
-                <sortable>true</sortable>
             </settings>
         </column>
         <column name="last_name">
             <settings>
                 <label translate="true">Last Name</label>
-                <filter>text</filter>
-                <dataType>text</dataType>
-                <sortable>true</sortable>
             </settings>
         </column>
         <column name="email">
             <settings>
                 <label translate="true">Email</label>
-                <filter>text</filter>
-                <sortable>true</sortable>
             </settings>
         </column>
         <column name="customer_id">
             <settings>
                 <label translate="true">Customer ID</label>
-                <filter>text</filter>
-                <sortable>true</sortable>
             </settings>
         </column>
     </columns>
