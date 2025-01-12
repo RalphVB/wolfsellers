@@ -10,4 +10,18 @@
     </type>
     <!-- FOR WEB API -->
     <preference for="Wolfsellers\Referral\Api\ReferralInterface" type="Wolfsellers\Referral\Model\Api\Referral"/>
+    <!-- FOR ADMIN GRID -->
+    <virtualType name="Wolfsellers\Referral\Model\ResourceModel\Referral\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">wolfsellers_referral</argument>
+            <argument name="resourceModel" xsi:type="string">Wolfsellers\Referral\Model\ResourceModel\Referral\Collection</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="wolfsellers_referral_grid_data_source" xsi:type="string">Wolfsellers\Referral\Model\ResourceModel\Referral\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
 </config>
