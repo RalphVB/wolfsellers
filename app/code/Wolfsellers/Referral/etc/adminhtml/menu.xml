@@ -2,6 +2,6 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
         <add id="Wolfsellers_Referral::menu" title="Wolfsellers" translate="title" module="Wolfsellers_Referral" sortOrder="10" resource="Wolfsellers_Referral::menu"/>
-        <add id="Wolfsellers_Referral::menu_grid" title="Referrals Management" module="Wolfsellers_Referral" sortOrder="10" parent="Wolfsellers_Referral::menu" action="wolfsellers/referal/grid" resource="Wolfsellers_Referral::menu_grid" />
+        <add id="Wolfsellers_Referral::menu_grid" title="Referrals Management" module="Wolfsellers_Referral" sortOrder="10" parent="Wolfsellers_Referral::menu" action="wolfsellers/referral/grid" resource="Wolfsellers_Referral::menu_grid" />
     </menu>
 </config>
