@@ -53,9 +53,9 @@
                 <label translate="true">Email</label>
             </settings>
         </column>
-        <column name="customer_id">
+        <column name="customer_id" class="Wolfsellers\Referral\Ui\Component\Listing\Columns\ReferredEmail">
             <settings>
-                <label translate="true">Customer ID</label>
+                <label translate="true">Referred Email</label>
             </settings>
         </column>
     </columns>
