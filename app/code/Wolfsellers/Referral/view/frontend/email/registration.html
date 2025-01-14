@@ -1,0 +1,38 @@
+<!--@subject {{trans "You have been referred!"}} @-->
+<!--@vars{
+    "var referral_name":"Referral Name",
+    "var customer_name":"Customer Name",
+    "var link": "Referral Registration Link"
+}
+@-->
+{{template config_path="design/email/header_template"}}
+
+<p class="greeting">{{trans "Hello %referral_name" referral_name=$referral_name}}</p>
+<p>{{trans "It's our pleasure to inform you that you have been referred by %customer_name"
+    customer_name=$customer_name}}</p>
+<p>{{trans "This means that you have been select to join our website and enjoy exclusive benefits just for
+    getting referred."}}</p>
+
+
+<table class="button" width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td>
+            <table class="inner-wrapper" border="0" cellspacing="0" cellpadding="0" align="center">
+                <tr>
+                    <td align="center">
+                        <!--
+                        <a
+                            href="{{var this.getUrl($store,'customer/account/createPassword/',[_query:[id:$customer.id,token:$customer.rp_token],_nosid:1])}}"
+                            target="_blank">{{trans "Register Now"}}</a>
+                        -->
+                        <a href="#" target="_blank">{{trans "Register Now"}}</a>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<p>{{trans "Feel free to contact us for help for any problems you may have with the registration."}}</p>
+
+{{template config_path="design/email/footer_template"}}
