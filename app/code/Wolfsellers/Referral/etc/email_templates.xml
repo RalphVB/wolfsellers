@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="wolfsellers_referral_register_email_template" label="Referral Registration" file="registration.html" type="html" module="Wolfsellers_Referral" area="frontend"/>
+</config>
