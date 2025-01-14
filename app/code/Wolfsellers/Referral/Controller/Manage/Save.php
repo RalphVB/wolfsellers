@@ -8,7 +8,8 @@ use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Controller\Result\RedirectFactory;
 use Magento\Framework\Data\Form\FormKey\Validator;
 use Magento\Customer\Model\Session as CustomerSession;
-use Magento\Framework\Message\ManagerInterface;
+use Magento\Framework\Message\ManagerInterface as MessageManagerInterface;
+use Magento\Framework\Event\ManagerInterface as EventManagerInterface;
 
 use Wolfsellers\Referral\Model\ReferralFactory;
 use Wolfsellers\Referral\Model\ResourceModel\Referral as ReferralResource;
@@ -39,9 +40,14 @@ class Save implements AccountInterface, HttpPostActionInterface
     protected $customerSession;
 
     /**
-     * @var ManagerInterface
+     * @var MessageManagerInterface
      */
     protected $messageManager;
+
+    /**
+     * @var EventManagerInterface
+     */
+    protected $eventManager;
 
     /**
      * @var ReferralFactory
@@ -58,7 +64,7 @@ class Save implements AccountInterface, HttpPostActionInterface
      */
     protected $referralValidation;
 
-        /**
+    /**
      * @var LoggerInterface
      */
     protected $logger;
@@ -70,7 +76,8 @@ class Save implements AccountInterface, HttpPostActionInterface
      * @param RedirectFactory $resultRedirectFactory
      * @param Validator $formKeyValidator
      * @param CustomerSession $customerSession
-     * @param ManagerInterface $messageManager
+     * @param MessageManagerInterface $messageManager
+     * @param EventManagerInterface $eventManager
      * @param ReferralFactory $referralFactory
      * @param ReferralResource $referralResource
      * @param ReferralValidation $referralValidation
@@ -81,7 +88,8 @@ class Save implements AccountInterface, HttpPostActionInterface
         RedirectFactory $resultRedirectFactory,
         Validator $formKeyValidator,
         CustomerSession $customerSession,
-        ManagerInterface $messageManager,
+        MessageManagerInterface $messageManager,
+        EventManagerInterface $eventManager,
         ReferralFactory $referralFactory,
         ReferralResource $referralResource,
         ReferralValidation $referralValidation,
@@ -92,6 +100,7 @@ class Save implements AccountInterface, HttpPostActionInterface
         $this->formKeyValidator = $formKeyValidator;
         $this->customerSession = $customerSession;
         $this->messageManager = $messageManager;
+        $this->eventManager = $eventManager;
         $this->referralFactory = $referralFactory;
         $this->referralResource = $referralResource;
         $this->referralValidation = $referralValidation;
@@ -117,25 +126,39 @@ class Save implements AccountInterface, HttpPostActionInterface
 
             $referral = $this->referralFactory->create()->setData($data);
 
+            $referral->unsetData('entity_id');
+            $referral->unsetData('status');
+            $referral->unsetData('customer_id');
+
             $validate =  $this->referralValidation->validate($referral);
 
-            if (is_bool($validate) && $validate === true) {
-                if( !empty($data['entity_id'])) {
+            if (is_bool($validate) && $validate) {
+
+                $flag = empty($data['entity_id']);
+
+                if (!$flag) {
                     $referral->load($data['entity_id']);
                 } else {
+                    $customer = $this->customerSession->getCustomer();
+
                     $referral->setStatus(false);
-                    $referral->setCustomerId($this->customerSession->getCustomer()->getId());
+                    $referral->setCustomerId($customer->getId());
                 }
-    
+
                 $referral->setFirstName($data['first_name']);
                 $referral->setLastName($data['last_name']);
                 $referral->setEmail($data['email']);
                 $referral->setPhone($data['phone']);
-    
+
                 $this->referralResource->save($referral);
-            
-                // TODO: SEND EMAIL FOR REFERRAL.
-        
+
+                if ($flag) {
+                    $this->eventManager->dispatch('wolfsellers_referral_referral_email', [
+                        'referral' => $referral,
+                        'customer' => $customer
+                    ]);
+                }
+
                 $this->messageManager->addSuccessMessage(__('Referral Saved Successfully.'));
             } else {
                 if (is_array($validate)) {
@@ -148,12 +171,11 @@ class Save implements AccountInterface, HttpPostActionInterface
 
                 return $redirect->setRefererUrl();
             }
-            
         } catch (\Exception $ex) {
             $this->messageManager->addErrorMessage(__('Something went wrong. Please try again.'));
             $this->logger->debug($ex->getMessage());
         }
-        
+
         return $redirect->setPath('referral/manage');
     }
 }
